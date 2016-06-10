@@ -13,11 +13,11 @@ pubspec.lock
 doc/api/
 
 # Files and directories dropped by other development environments
-*.iml         // IntelliJ
-*.ipr         // IntelliJ
-*.iws         // IntelliJ
-.idea/        // IntelliJ
-.DS_Store     // Mac
+*.iml
+*.ipr
+*.iws
+.idea/
+.DS_Store
 
 # Generated JavaScript files
 *.dart.js
