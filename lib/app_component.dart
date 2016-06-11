@@ -1,10 +1,27 @@
-import 'package:angular2/core.dart';
-import 'hero.dart';
-import 'hero_detail_component.dart';
+//import 'dart:async';
 
+import 'package:angular2/core.dart';
+
+import 'hero.dart';
+import 'hero_service.dart';
+import 'hero_detail_component.dart';
 
 @Component(
   selector: 'my-app',
+  template: '''
+    <h1>{{title}}</h1>
+    <h2>My Heroes</h2>
+
+    <ul class="heroes">
+      <li *ngFor="#hero of heroes"
+        [class.selected]="hero == selectedHero"
+        (click)="onSelect(hero)">
+        <span class="badge">{{hero.id}}</span> {{hero.name}}
+      </li>
+    </ul>
+
+    <my-hero-detail [hero]="selectedHero"></my-hero-detail>
+  ''',
   styles: const [
     '''
     .selected {
@@ -53,45 +70,32 @@ import 'hero_detail_component.dart';
       margin-right: .8em;
       border-radius: 4px 0px 0px 4px;
     }
-  '''
+    '''
   ],
-  template: '''
-    <h1>{{title}}</h1>
-    <h2>My Heroes</h2>
-
-    <ul class="heroes">
-      <li *ngFor="#hero of heroes"
-        [class.selected]="hero == selectedHero"
-        (click)="onSelect(hero)">
-        <span class="badge">{{hero.id}}</span> {{hero.name}}
-      </li>
-    </ul>
-
-    <my-hero-detail [hero]="selectedHero"></my-hero-detail>
-    ''',
-    directives: const [
-      HeroDetailComponent
-    ])
-class AppComponent {
-  final List<Hero> heroes = mockHeroes;
+  directives: const [
+    HeroDetailComponent
+  ],
+  providers: const [
+    HeroService
+  ])
+class AppComponent  implements OnInit {
   String title = 'Tour of Heroes';
+  List<Hero> heroes;
   Hero selectedHero;
+
+  final HeroService _heroService;
+
+  AppComponent(this._heroService);
+
+  ngOnInit() {
+    getHeroes();
+  }
+
+  getHeroes() async {
+    heroes = await _heroService.getHeroes();
+  }
 
   onSelect(Hero hero) {
     selectedHero = hero;
   }
 }
-
-
-final List<Hero> mockHeroes = [
-  new Hero(11, 'Mr. Nice'),
-  new Hero(12, 'Narco'),
-  new Hero(13, 'Bombasto'),
-  new Hero(14, 'Celeritas'),
-  new Hero(15, 'Magneta'),
-  new Hero(16, 'RubberMan'),
-  new Hero(17, 'Dynama'),
-  new Hero(18, 'Dr IQ'),
-  new Hero(19, 'Magma'),
-  new Hero(20, 'Tornado')
-];
