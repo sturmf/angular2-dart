@@ -1,4 +1,5 @@
 import 'package:angular2/core.dart';
+import 'package:angular2/platform/common.dart';
 import 'package:angular2/router.dart';
 
 import 'hero_service.dart';
@@ -23,6 +24,7 @@ import 'hero_detail_component.dart';
   ],
   providers: const [
     ROUTER_PROVIDERS,
+    const Provider(LocationStrategy, useClass: HashLocationStrategy),
     HeroService
   ]
 )
